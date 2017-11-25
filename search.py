@@ -87,11 +87,38 @@ def depthFirstSearch(problem):
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     """
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+
+    print "Start:", problem.getStartState()
+    print "Is the start a goal?", problem.isGoalState(problem.getStartState())
+    print "Start's successors:", problem.getSuccessors(problem.getStartState())
+    
+    """Initialize start, use a stack and add a top node to the stack"""
+    start = problem.getStartState()
+    stack = util.Stack()
+    visited = []
+    stack.push((start,[()],0))
+
+    while stack :
+
+        coord,moves,costs = stack.pop()
+
+        if (problem.isGoalState((coord))):
+            print "Path: ", moves[1:]
+            return moves[1:]
+
+        if (coord in visited):
+            continue
+
+        visited.append(coord)
+
+        for kidcoord,kidmove,kidcost in problem.getSuccessors(coord):
+            stack.push((kidcoord,moves + [kidmove],kidcost))
+    
+    return []
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
-    
+    """    Jullie meestercode
     i = 0
     start = problem.getStartState()
     q = util.Queue()
@@ -115,9 +142,36 @@ def breadthFirstSearch(problem):
                 q.push(kid[0])
 
     return []
+    """
+    "*** YOUR CODE HERE ***"
 
+    print "Start:", problem.getStartState()
+    print "Is the start a goal?", problem.isGoalState(problem.getStartState())
+    print "Start's successors:", problem.getSuccessors(problem.getStartState())
+    
+    """Initialize start, use a queue and add a top node to the stack"""
+    start = problem.getStartState()
+    stack = util.Queue()
+    visited = []
+    stack.push((start,[()],0))
 
+    while stack :
 
+        coord,moves,costs = stack.pop()
+
+        if (problem.isGoalState((coord))):
+            print "Path: ", moves[1:]
+            return moves[1:]
+
+        if (coord in visited):
+            continue
+
+        visited.append(coord)
+
+        for kidcoord,kidmove,kidcost in problem.getSuccessors(coord):
+            stack.push((kidcoord,moves + [kidmove],kidcost))
+    
+    return []
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""

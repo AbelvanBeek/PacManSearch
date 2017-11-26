@@ -96,15 +96,15 @@ def depthFirstSearch(problem):
     start = problem.getStartState()
     stack = util.Stack()
     visited = []
-    stack.push((start,[()],0))
+    stack.push((start,[],0))
 
     while stack :
 
         coord,moves,costs = stack.pop()
 
         if (problem.isGoalState((coord))):
-            print "Path: ", moves[1:]
-            return moves[1:]
+            print "Path: ", moves
+            return moves
 
         if (coord in visited):
             continue
@@ -153,15 +153,15 @@ def breadthFirstSearch(problem):
     start = problem.getStartState()
     stack = util.Queue()
     visited = []
-    stack.push((start,[()],0))
+    stack.push((start,[],0))
 
     while stack :
 
         coord,moves,costs = stack.pop()
 
         if (problem.isGoalState((coord))):
-            print "Path: ", moves[1:]
-            return moves[1:]
+            print "Path: ", moves
+            return moves
 
         if (coord in visited):
             continue
@@ -176,7 +176,33 @@ def breadthFirstSearch(problem):
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    print "Start:", problem.getStartState()
+    print "Is the start a goal?", problem.isGoalState(problem.getStartState())
+    print "Start's successors:", problem.getSuccessors(problem.getStartState())
+    
+    """Initialize start, use a queue and add a top node to the stack"""
+    start = problem.getStartState()
+    stack = util.PriorityQueue()
+    visited = []
+    stack.push((start,[]),0)
+
+    while stack :
+
+        coord, moves = stack.pop()
+
+        if (problem.isGoalState((coord))):
+            print "Path: ", moves
+            return moves
+
+        if (coord in visited):
+            continue
+
+        visited.append(coord)
+
+        for kidcoord,kidmove,kidcosts in problem.getSuccessors(coord):
+            stack.push((kidcoord,moves + [kidmove]),problem.getCostOfActions(moves + [kidmove]))
+    
+    return []
 
 def nullHeuristic(state, problem=None):
     """

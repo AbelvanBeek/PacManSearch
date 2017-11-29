@@ -73,26 +73,6 @@ def tinyMazeSearch(problem):
     return  [s, s, w, s, w, w, s, w]
 
 def depthFirstSearch(problem):
-    """
-    Search the deepest nodes in the search tree first.
-
-    Your search algorithm needs to return a list of actions that reaches the
-    goal. Make sure to implement a graph search algorithm.
-
-    To get started, you might want to try some of these simple commands to
-    understand the search problem that is being passed in:
-
-    print "Start:", problem.getStartState()
-    print "Is the start a goal?", problem.isGoalState(problem.getStartState())
-    print "Start's successors:", problem.getSuccessors(problem.getStartState())
-    """
-    "*** YOUR CODE HERE ***"
-
-    print "Start:", problem.getStartState()
-    print "Is the start a goal?", problem.isGoalState(problem.getStartState())
-    print "Start's successors:", problem.getSuccessors(problem.getStartState())
-    
-    """Initialize start, use a stack and add a top node to the stack"""
     start = problem.getStartState()
     stack = util.Stack()
     visited = []
@@ -117,39 +97,6 @@ def depthFirstSearch(problem):
     return []
 
 def breadthFirstSearch(problem):
-    """Search the shallowest nodes in the search tree first."""
-    """    Jullie meestercode
-    i = 0
-    start = problem.getStartState()
-    q = util.Queue()
-    q.push(start)
-
-    l = []
-
-    while not q.isEmpty():
-
-        state = q.pop()
-
-        if problem.isGoalState(state):
-            print "found"
-            return []
-        else:
-            l.append(state)
-            
-
-        for kid in problem.getSuccessors(state):
-            if kid[0] not in l:
-                q.push(kid[0])
-
-    return []
-    """
-    "*** YOUR CODE HERE ***"
-
-    print "Start:", problem.getStartState()
-    print "Is the start a goal?", problem.isGoalState(problem.getStartState())
-    print "Start's successors:", problem.getSuccessors(problem.getStartState())
-    
-    """Initialize start, use a queue and add a top node to the stack"""
     start = problem.getStartState()
     stack = util.Queue()
     visited = []
@@ -174,13 +121,6 @@ def breadthFirstSearch(problem):
     return []
 
 def uniformCostSearch(problem):
-    """Search the node of least total cost first."""
-    "*** YOUR CODE HERE ***"
-    print "Start:", problem.getStartState()
-    print "Is the start a goal?", problem.isGoalState(problem.getStartState())
-    print "Start's successors:", problem.getSuccessors(problem.getStartState())
-    
-    """Initialize start, use a queue and add a top node to the stack"""
     start = problem.getStartState()
     stack = util.PriorityQueue()
     visited = []
@@ -213,8 +153,29 @@ def nullHeuristic(state, problem=None):
 
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    start = problem.getStartState()
+    stack = util.PriorityQueue()
+    visited = []
+    stack.push((start,[]),0)
+
+    while stack :
+
+        coord, moves = stack.pop()
+
+        if (problem.isGoalState((coord))):
+            print "Path: ", moves
+            return moves
+
+        if (coord in visited):
+            continue
+
+        visited.append(coord)
+
+        for kidcoord,kidmove,kidcosts in problem.getSuccessors(coord):
+            newmoves = moves + [kidmove]
+            stack.push((kidcoord,newmoves), problem.getCostOfActions(newmoves) + heuristic(coord, problem))
+    
+    return []
 
 
 # Abbreviations

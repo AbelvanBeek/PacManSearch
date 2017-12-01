@@ -173,7 +173,7 @@ def aStarSearch(problem, heuristic=nullHeuristic):
 
         for kidcoord,kidmove,kidcosts in problem.getSuccessors(coord):
             newmoves = moves + [kidmove]
-            stack.push((kidcoord,newmoves), problem.getCostOfActions(newmoves) + heuristic(coord, problem))
+            stack.push((kidcoord,newmoves), problem.getCostOfActions(newmoves) + heuristic(kidcoord, problem))
     
     return []
 

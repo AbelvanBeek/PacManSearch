@@ -353,30 +353,35 @@ def cornersHeuristic(state, problem):
     admissible (as well as consistent).
     """
     
-    corners = problem.corners # These are the corner coordinates
-    walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
+    # start value
+    heuristic = 0
 
-    position, visitedCorners = state
+    # return 0 if this is the goalstate
+    if problem.isGoalState(state):
+        return heuristic
 
-    xy1 = position
-    heuristicvalue = 0
-    cornerList = [item for item in corners if item not in visitedCorners]
-    #print cornerList
-    if not cornerList:
-        return heuristicvalue  
+    # state
+    position, cornersVisited = state
+    # unvisited corners
+    unvisited = [item for item in problem.corners if item not in cornersVisited] # These are the corner coordinates
+    # These are the walls of the maze, as a Grid (game.py)
+    walls = problem.walls 
 
-    closestCorner = None
-    closestCornerDistance = 9999999999
+    while unvisited:
+        (closestcorner, distance) = closestCorner(position, unvisited)
+        unvisited.remove(closestcorner)
+        position = closestcorner
+        heuristic += distance
 
-    for xy2 in cornerList:
-        newHeur = abs(xy1[0] - xy2[0]) + abs(xy1[1] - xy2[1])
-        if newHeur < closestCornerDistance:
-            closestCorner = xy2
-            closestCornerDistance = newHeur
+    return heuristic
 
-    heuristicvalue += closestCornerDistance
-
-    return heuristicvalue
+def closestCorner (position, corners):
+    closestcorner, distance = None, None
+    for c in corners:
+        d = util.manhattanDistance(position, c)
+        if distance == None or d < distance:
+            closestcorner, distance = c, d
+    return (closestcorner, distance)
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"

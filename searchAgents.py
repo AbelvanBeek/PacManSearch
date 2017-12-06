@@ -352,13 +352,12 @@ def cornersHeuristic(state, problem):
     shortest path from the state to a goal of the problem; i.e.  it should be
     admissible (as well as consistent).
     """
+    
     corners = problem.corners # These are the corner coordinates
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
 
     "*** Version 2 ***"
 
-
-    "*** Version 1 ***"
     cost = 0
     (px,py), cornersVisited = state
     for pos in corners:
@@ -368,6 +367,30 @@ def cornersHeuristic(state, problem):
         dx, dy = x - px, y - py
         cost += (dx * dx) + (dy * dy)
     return cost
+    
+    "*** Version 1 ***"
+
+    position, visitedCorners = state
+
+    xy1 = position
+    heuristicvalue = 0
+    cornerList = [item for item in corners if item not in visitedCorners]
+    #print cornerList
+    if not cornerList:
+        return heuristicvalue  
+
+    closestCorner = None
+    closestCornerDistance = 9999999999
+
+    for xy2 in cornerList:
+        newHeur = abs(xy1[0] - xy2[0]) + abs(xy1[1] - xy2[1])
+        if newHeur < closestCornerDistance:
+            closestCorner = xy2
+            closestCornerDistance = newHeur
+
+    heuristicvalue += closestCornerDistance
+
+    return heuristicvalue
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
@@ -459,15 +482,27 @@ def foodHeuristic(state, problem):
     Subsequent calls to this heuristic can access
     problem.heuristicInfo['wallCount']
     """
+
     position, foodGrid = state
-    "*** YOUR CODE HERE ***"
+
     xy1 = position
     heuristicvalue = 0
     foodlist = foodGrid.asList()
+    #print foodlist
+    if not foodlist:
+        return heuristicvalue  
+
+    closestFood = None
+    closestFoodDistance = 9999999999
+
     for xy2 in foodlist:
-        if xy2:
-            heuristicvalue = abs(xy1[0] - xy2[0]) + abs(xy1[1] - xy2[1])
-            
+        newHeur = abs(xy1[0] - xy2[0]) + abs(xy1[1] - xy2[1])
+        if newHeur < closestFoodDistance:
+            closestFood = xy2
+            closestFoodDistance = newHeur
+
+    heuristicvalue += closestFoodDistance
+
     return heuristicvalue
 
 class ClosestDotSearchAgent(SearchAgent):
@@ -494,12 +529,12 @@ class ClosestDotSearchAgent(SearchAgent):
         """
         # Here are some useful elements of the startState
         startPosition = gameState.getPacmanPosition()
-        food = gameState.getFood()
+        food = gameState.getFood().asList()
         walls = gameState.getWalls()
         problem = AnyFoodSearchProblem(gameState)
 
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        return search.breadthFirstSearch(problem)
 
 class AnyFoodSearchProblem(PositionSearchProblem):
     """
@@ -533,9 +568,10 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         complete the problem definition.
         """
         x,y = state
+        #print self.food
 
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        return self.food[x][y] == True
 
 def mazeDistance(point1, point2, gameState):
     """

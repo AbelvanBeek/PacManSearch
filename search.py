@@ -76,14 +76,13 @@ def depthFirstSearch(problem):
     start = problem.getStartState()
     stack = util.Stack()
     visited = []
-    stack.push((start,[],0))
+    stack.push((start,[]))
 
     while stack :
 
-        coord,moves,costs = stack.pop()
+        coord,moves = stack.pop()
 
         if (problem.isGoalState((coord))):
-            print "Path: ", moves
             return moves
 
         if (coord in visited):
@@ -91,8 +90,8 @@ def depthFirstSearch(problem):
 
         visited.append(coord)
 
-        for kidcoord,kidmove,kidcost in problem.getSuccessors(coord):
-            stack.push((kidcoord,moves + [kidmove],kidcost))
+        for kidcoord,kidmove,unused in problem.getSuccessors(coord):
+            stack.push((kidcoord,moves + [kidmove]))
     
     return []
 

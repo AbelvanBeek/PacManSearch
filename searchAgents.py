@@ -356,20 +356,6 @@ def cornersHeuristic(state, problem):
     corners = problem.corners # These are the corner coordinates
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
 
-    "*** Version 2 ***"
-
-    cost = 0
-    (px,py), cornersVisited = state
-    for pos in corners:
-        if pos in cornersVisited:
-            continue
-        x,y = pos
-        dx, dy = x - px, y - py
-        cost += (dx * dx) + (dy * dy)
-    return cost
-    
-    "*** Version 1 ***"
-
     position, visitedCorners = state
 
     xy1 = position

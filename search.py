@@ -100,14 +100,13 @@ def breadthFirstSearch(problem):
     start = problem.getStartState()
     stack = util.Queue()
     visited = []
-    stack.push((start,[],0))
+    stack.push((start,[]))
 
     while stack :
 
-        state,moves,costs = stack.pop()
+        state,moves = stack.pop()
 
         if problem.isGoalState(state):
-            print "Path: ", moves
             return moves
 
         if (state in visited):
@@ -115,8 +114,8 @@ def breadthFirstSearch(problem):
 
         visited.append(state)
 
-        for newstate,move,cost in problem.getSuccessors(state):
-            stack.push((newstate, moves + [move], cost))
+        for newstate,move,unused in problem.getSuccessors(state):
+            stack.push((newstate, moves + [move]))
     
     return []
 
